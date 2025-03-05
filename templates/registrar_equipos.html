@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Equipos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Registrar Equipos</h1>
+    <form method="POST">
+        <label for="nombre_equipo">Nombre del Equipo:</label>
+        <input type="text" id="nombre_equipo" name="nombre_equipo" required>
+        <br>
+        <label for="miembros">Miembros (2-5):</label>
+        <input type="text" id="miembro1" name="miembros" required>
+        <input type="text" id="miembro2" name="miembros" required>
+        <input type="text" id="miembro3" name="miembros">
+        <input type="text" id="miembro4" name="miembros">
+        <input type="text" id="miembro5" name="miembros">
+        <br>
+        <button type="submit">Registrar Equipo</button>
+    </form>
+    <a href="{{ url_for('index') }}">Volver al Inicio</a>
+</body>
+</html>

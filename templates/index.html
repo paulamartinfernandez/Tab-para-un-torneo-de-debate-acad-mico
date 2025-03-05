@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Bienvenido al Torneo</h1>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('registrar_equipos') }}">Registrar Equipos</a></li>
+            <li><a href="{{ url_for('clasificacion_equipos') }}">Clasificación de Equipos</a></li>
+            <li><a href="{{ url_for('clasificacion_oradores') }}">Clasificación de Oradores</a></li>
+            <li><a href="{{ url_for('enfrentamientos') }}">Enfrentamientos</a></li>
+            <li><a href="{{ url_for('registrar_resultados') }}">Registrar Resultados</a></li>
+        </ul>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Resultados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Registrar Resultados</h1>
+    <form method="POST">
+        <ul>
+            {% for enfrentamiento in enfrentamientos %}
+                <li>
+                    <h3>{{ enfrentamiento[0] }} vs {{ enfrentamiento[1] }}</h3>
+
+                    <!-- Ganador y perdedor -->
+                    <label for="ganador_{{ loop.index }}">Ganador:</label>
+                    <select id="ganador_{{ loop.index }}" name="ganador_{{ loop.index }}">
+                        <option value="{{ enfrentamiento[0] }}">{{ enfrentamiento[0] }}</option>
+                        <option value="{{ enfrentamiento[1] }}">{{ enfrentamiento[1] }}</option>
+                    </select>
+
+                    <!-- Ítems de cada equipo -->
+                    <label for="items_{{ enfrentamiento[0] }}">Ítems de {{ enfrentamiento[0] }}:</label>
+                    <input type="number" id="items_{{ enfrentamiento[0] }}" name="items_{{ enfrentamiento[0] }}" required>
+
+                    <label for="items_{{ enfrentamiento[1] }}">Ítems de {{ enfrentamiento[1] }}:</label>
+                    <input type="number" id="items_{{ enfrentamiento[1] }}" name="items_{{ enfrentamiento[1] }}" required>
+
+                    <!-- Ítems de cada miembro -->
+                    <h4>Ítems de los miembros de {{ enfrentamiento[0] }}:</h4>
+                    {% set equipo_1 = equipos|selectattr("nombre", "equalto", enfrentamiento[0])|first %}
+                    {% set equipo_2 = equipos|selectattr("nombre", "equalto", enfrentamiento[1])|first %}
+
+                    {% for miembro in equipo_1.miembros %}
+                        <label for="puntos_{{ miembro.nombre }}">{{ miembro.nombre }}:</label>
+                        <input type="number" id="puntos_{{ miembro.nombre }}" name="puntos_{{ miembro.nombre }}" required>
+                    {% endfor %}
+
+                    <h4>Ítems de los miembros de {{ enfrentamiento[1] }}:</h4>
+                    {% for miembro in equipo_2.miembros %}
+                        <label for="puntos_{{ miembro.nombre }}">{{ miembro.nombre }}:</label>
+                        <input type="number" id="puntos_{{ miembro.nombre }}" name="puntos_{{ miembro.nombre }}" required>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Registrar Resultados</button>
+    </form>
+    <a href="{{ url_for('index') }}">Volver al Inicio</a>
+</body>
+</html>

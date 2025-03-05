@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enfrentamientos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <h1>Enfrentamientos</h1>
+    <form method="POST">
+        <label for="fase">Fase:</label>
+        <select id="fase" name="fase">
+            <option value="inicial">Inicial</option>
+            <option value="clasificatoria">Clasificatoria</option>
+            <option value="octavos">Octavos</option>
+            <option value="cuartos">Cuartos</option>
+            <option value="semifinales">Semifinales</option>
+            <option value="final">Final</option>
+        </select>
+        <br>
+        <button type="submit">Generar Enfrentamientos</button>
+    </form>
+
+    {% if enfrentamientos %}
+    <h2>Enfrentamientos Generados</h2>
+    <ul>
+        {% for enfrentamiento in enfrentamientos %}
+        <li>{{ enfrentamiento[0] }} vs {{ enfrentamiento[1] }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">Volver al Inicio</a>
+</body>
+</html>
