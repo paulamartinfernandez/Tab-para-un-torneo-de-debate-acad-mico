@@ -23,6 +23,11 @@
         </tr>
         {% endfor %}
     </table>
+    
+    <form action="{{ url_for('exportar_clasificacion_oradores') }}" method="get">
+        <button type="submit" class="btn-exportar-oradores" id="exportar-oradores">Exportar clasificación de oradores</button>
+    </form>
+
     <a href="{{ url_for('index') }}">Volver al Inicio</a>
 </body>
 </html>

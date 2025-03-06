@@ -12,15 +12,37 @@
         <label for="nombre_equipo">Nombre del Equipo:</label>
         <input type="text" id="nombre_equipo" name="nombre_equipo" required>
         <br>
+        <label for="victorias">Victorias:</label>
+        <input type="number" id="victorias" name="victorias" min="0" required>
+        <br>
+        <label for="items">Ítems:</label>
+        <input type="number" id="items" name="items" min="0" required>
+        <br>
         <label for="miembros">Miembros (2-5):</label>
-        <input type="text" id="miembro1" name="miembros" required>
-        <input type="text" id="miembro2" name="miembros" required>
-        <input type="text" id="miembro3" name="miembros">
-        <input type="text" id="miembro4" name="miembros">
-        <input type="text" id="miembro5" name="miembros">
+        <div>
+            <input type="text" name="miembros[0][nombre]" placeholder="Nombre Miembro 1" required>
+            <input type="number" name="miembros[0][puntos_orador]" placeholder="Puntos" min="0" required>
+        </div>
+        <div>
+            <input type="text" name="miembros[1][nombre]" placeholder="Nombre Miembro 2" required>
+            <input type="number" name="miembros[1][puntos_orador]" placeholder="Puntos" min="0" required>
+        </div>
+        <div>
+            <input type="text" name="miembros[2][nombre]" placeholder="Nombre Miembro 3">
+            <input type="number" name="miembros[2][puntos_orador]" placeholder="Puntos" min="0">
+        </div>
+        <div>
+            <input type="text" name="miembros[3][nombre]" placeholder="Nombre Miembro 4">
+            <input type="number" name="miembros[3][puntos_orador]" placeholder="Puntos" min="0">
+        </div>
+        <div>
+            <input type="text" name="miembros[4][nombre]" placeholder="Nombre Miembro 5">
+            <input type="number" name="miembros[4][puntos_orador]" placeholder="Puntos" min="0">
+        </div>
         <br>
         <button type="submit">Registrar Equipo</button>
-    </form>
+    </form>    
+    
     <a href="{{ url_for('index') }}">Volver al Inicio</a>
 </body>
 </html>

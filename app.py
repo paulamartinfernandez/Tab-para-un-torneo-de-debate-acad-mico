@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from functions import Miembro, Equipo, registrar_equipo, enfrentamientos_iniciales, enfrentamientos_clasificatoria, resultados_ronda, fases_finales
+import csv 
 
 app = Flask(__name__)
 
@@ -14,15 +15,28 @@ def index():
 def registrar_equipos():
     if request.method == "POST":
         nombre_equipo = request.form.get("nombre_equipo")
-        miembros = request.form.getlist("miembros")
+        miembros = []
+
+        # Recuperar los miembros del formulario
+        for i in range(5):
+            nombre = request.form.get(f"miembros[{i}][nombre]")
+            puntos_orador = request.form.get(f"miembros[{i}][puntos_orador]", type=int)
+
+            # Solo agregar si hay un nombre de miembro
+            if nombre:
+                miembros.append({'nombre': nombre, 'puntos_orador': puntos_orador})
+
+        victorias = request.form.get("victorias", type=int)
+        items = request.form.get("items", type=int)
 
         try:
-            registrar_equipo(equipos, nombre_equipo, miembros)
+            registrar_equipo(equipos, nombre_equipo, miembros, victorias, items)
             return redirect(url_for("index"))
         except ValueError as e:
             return str(e), 400  # Devuelve un mensaje de error si la validación falla
 
     return render_template("registrar_equipos.html")
+
 
 @app.route("/clasificacion_equipos")
 @app.route("/clasificacion_equipos")
@@ -87,9 +101,53 @@ def registrar_resultados():
     enfrentamientos_generados = enfrentamientos_iniciales(equipos)  # Generar enfrentamientos
     return render_template("registrar_resultados.html", enfrentamientos=enfrentamientos_generados, equipos=equipos)
 
-    # Si es una solicitud GET, generar los enfrentamientos y mostrarlos
-    enfrentamientos_generados = enfrentamientos_iniciales(equipos)  # Generar enfrentamientos
-    return render_template("registrar_resultados.html", enfrentamientos=enfrentamientos_generados)
+    # # Si es una solicitud GET, generar los enfrentamientos y mostrarlos
+    # enfrentamientos_generados = enfrentamientos_iniciales(equipos)  # Generar enfrentamientos
+    # return render_template("registrar_resultados.html", enfrentamientos=enfrentamientos_generados)
+@app.route("/exportar_clasificacion_equipos")
+def exportar_clasificacion_equipos():
+    # Ordenar los equipos primero por victorias y luego por puntos
+    equipos_ordenados = sorted(equipos, key=lambda equipo: (equipo.victorias, equipo.items), reverse=True)
+    
+    # Definir el nombre del archivo CSV
+    archivo_csv = "clasificacion_equipos.csv"
+
+    # Abrir el archivo en modo escritura
+    with open(archivo_csv, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Nombre del Equipo', 'Victorias', 'Ítems', 'Miembro', 'Puntos'])  # Encabezados
+
+        # Escribir los datos de cada equipo
+        for equipo in equipos_ordenados:
+            for miembro in equipo.miembros:
+                writer.writerow([equipo.nombre, equipo.victorias, equipo.items, miembro.nombre, miembro.puntos_orador])
+
+    return send_file(archivo_csv, as_attachment=True)
+
+@app.route("/exportar_clasificacion_oradores")
+def exportar_clasificacion_oradores():
+    oradores = []
+    for equipo in equipos:
+        for miembro in equipo.miembros:
+            oradores.append((miembro.nombre, miembro.puntos_orador, equipo.nombre))
+    
+    oradores_ordenados = sorted(oradores, key=lambda x: x[1], reverse=True)
+    
+    # Definir el nombre del archivo CSV
+    archivo_csv = "clasificacion_oradores.csv"
+
+    # Abrir el archivo en modo escritura
+    with open(archivo_csv, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Nombre Orador', 'Puntos', 'Equipo'])  # Encabezados
+
+        # Escribir los datos de cada orador
+        for orador, puntos, equipo in oradores_ordenados:
+            writer.writerow([orador, puntos, equipo])
+
+    return send_file(archivo_csv, as_attachment=True)
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

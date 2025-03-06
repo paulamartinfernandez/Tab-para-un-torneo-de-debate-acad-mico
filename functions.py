@@ -1,41 +1,43 @@
 import random
 
 class Miembro:
-    def __init__(self, nombre, tipo_orador="orador"):
+    def __init__(self, nombre, tipo_orador="orador", puntos_orador:int = 0):
         self.nombre = nombre
-        self.puntos_orador = 0
+        self.puntos_orador = puntos_orador
         self.tipo_orador = tipo_orador
 
 class Equipo:
-    def __init__(self, nombre: str, miembros: list[Miembro]):
+    def __init__(self, nombre: str, miembros: list[Miembro], victorias: int = 0, items: int = 0):
         self.nombre = nombre
-        self.victorias = 0
-        self.items = 0
+        self.victorias = victorias
+        self.items = items
         self.miembros = miembros
         self.equipos_contra = []
 
-def registrar_equipo(equipos: list[Equipo], nombre_equipo: str, miembros: list[str]):
+def registrar_equipo(equipos: list[Equipo], nombre_equipo: str, miembros: list[dict], victorias=0, items=0):
     """
     Registra un nuevo equipo en la lista de equipos.
     
     Args:
         equipos (list[Equipo]): Lista global de equipos.
         nombre_equipo (str): Nombre del equipo.
-        miembros (list[str]): Lista de nombres de los miembros del equipo.
+        miembros (list[dict]): Lista de diccionarios con la información de los miembros ({'nombre': str, 'puntos_orador': int}).
+        victorias (int): Número de victorias del equipo.
+        items (int): Número de ítems del equipo.
     """
     # Validar que el equipo tenga entre 2 y 5 miembros
     if len(miembros) < 2 or len(miembros) > 5:
         raise ValueError("El equipo debe tener entre 2 y 5 miembros.")
 
-    # Crear objetos Miembro para cada nombre en la lista
-    miembros_objetos = [Miembro(nombre=nombre, tipo_orador="orador") for nombre in miembros]
+    # Crear objetos Miembro para cada diccionario en la lista
+    miembros_objetos = [Miembro(nombre=miembro['nombre'], puntos_orador=miembro.get('puntos_orador', 0)) for miembro in miembros]
 
-    # Crear el equipo y añadirlo a la lista global
-    nuevo_equipo = Equipo(nombre=nombre_equipo, miembros=miembros_objetos)
+    # Crear el equipo con las victorias e ítems proporcionados
+    nuevo_equipo = Equipo(nombre=nombre_equipo, miembros=miembros_objetos, victorias=victorias, items=items)
     equipos.append(nuevo_equipo)
 
-def enfrentamientos_iniciales(equipos: list[Equipo]):
 
+def enfrentamientos_iniciales(equipos: list[Equipo]):
 
     # Si hay un número impar de equipos y no existe un "Swing", crearlo
     if len(equipos) % 2 != 0 :
@@ -115,3 +117,4 @@ def fases_finales(equipos, fase):
         enfrentamientos.append([equipos_clasifican[i].nombre, equipos_clasifican[fase - 1 - i].nombre])
 
     return equipos_clasifican, enfrentamientos
+

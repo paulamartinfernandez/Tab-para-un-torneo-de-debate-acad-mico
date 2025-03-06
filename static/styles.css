@@ -14,7 +14,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-    color: #2c3e50;
+    color:  #3498db;
 }
 
 /* Títulos principales */
@@ -95,6 +95,22 @@ form button:hover {
     background-color: #2980b9;
 }
 
+/* Botones específicos de exportación */
+form .btn-exportar-equipos,
+form .btn-exportar-oradores {
+    background-color: #2ecc71;  /* Color verde */
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+form .btn-exportar-equipos:hover,
+form .btn-exportar-oradores:hover {
+    background-color: #27ae60;  /* Color verde oscuro */
+}
+
 /* Tablas */
 table {
     width: 100%;
@@ -151,6 +167,14 @@ ul li {
 
 ul li:last-child {
     border-bottom: none;
+}
+
+.imagen-centrada {
+    display: block;          /* Para que se respete el margin auto */
+    margin: 20px auto;       /* Centrado horizontal y separación vertical */
+    max-width: 500px;        /* Ancho máximo razonable */
+    width: 100%;             /* Se adapta al tamaño del contenedor */
+    height: auto;            /* Mantiene la proporción original */
 }
 
 /* Responsividad */
